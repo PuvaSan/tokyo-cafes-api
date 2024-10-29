@@ -7,14 +7,14 @@ class Api::V1::CafesController < ApplicationController
     end
 
     # return json in descending order
-    render json: @cafes.order(create_at: :desc)
+    render json: @cafes
   end
 
-  def create
+  # def create
 
-  end
+  # end
 
-  def update
+  # def update
 
-  end
+  # end
 end
