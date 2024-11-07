@@ -20,6 +20,12 @@ class Api::V1::CafesController < ApplicationController
 
   def create
     @cafe = Cafe.new(cafe_params)
+
+    if @cafe.save
+      render json: @cafe, status: :created
+    else
+      render json: { errors: @cafe.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   # def update
