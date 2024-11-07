@@ -6,14 +6,26 @@ class Api::V1::CafesController < ApplicationController
     #   @cafes = Cafe.all
     # end
 
-    @cafes = params[:title].present? ? Cafe.where('title ILIKE ?', "%#{params[:title]}%") : Cafe.all
-
+    # you can search based on title or id
+    @cafes = if params[:title].present?
+               Cafe.where('title ILIKE ?', "%#{params[:title]}%")
+             elsif params[:id].present?
+               Cafe.where(id: params[:id])
+             else
+               Cafe.all
+             end
     # return json in descending order
     render json: @cafes.order(created_at: :desc)
   end
 
   def create
     @cafe = Cafe.new(cafe_params)
+
+    if @cafe.save
+      render json: @cafe, status: :created
+    else
+      render json: { errors: @cafe.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   # def update
